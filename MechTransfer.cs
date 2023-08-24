@@ -307,8 +307,9 @@ namespace MechTransfer
             if (modMagicStorageExtra != null)
             {
                 //Magic storage extra interface
-                MagicStorageExtraInterfaceAdapter magicStorageExtraInterfaceAdapter = new MagicStorageExtraInterfaceAdapter();
-                Call(registerAdapterReflection, magicStorageExtraInterfaceAdapter, new int[] { ModContent.TileType<MagicStorageExtraInterfaceTile>() });
+                // TODO
+                //MagicStorageExtraInterfaceAdapter magicStorageExtraInterfaceAdapter = new MagicStorageExtraInterfaceAdapter();
+                //Call(registerAdapterReflection, magicStorageExtraInterfaceAdapter, new int[] { ModContent.TileType<MagicStorageExtraInterfaceTile>() });
             }
         }
 
