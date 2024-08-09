@@ -7,12 +7,12 @@ namespace MechTransfer
 {
     internal class MechTransferMechanic : GlobalNPC
     {
-        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
         {
             if (type == NPCID.Mechanic)
             {
                 shop.item[nextSlot++].SetDefaults(ModContent.ItemType<PneumaticActuatorItem>());
-                shop.item[nextSlot++].SetDefaults(mod.ItemType("AnyFilterItem"));
+                shop.item[nextSlot++].SetDefaults(Mod.Find<ModItem>("AnyFilterItem").Type);
             }
         }
     }

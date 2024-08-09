@@ -12,7 +12,7 @@ namespace MechTransfer.Tiles.Simple
         {
         }
 
-        public override bool Autoload(ref string name, ref string texture)
+        public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */
         {
             return false;
         }

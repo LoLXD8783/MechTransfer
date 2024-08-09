@@ -7,7 +7,7 @@ namespace MechTransfer.Tiles
 {
     public abstract class FilterableTile<T> : SimpleTETile<T> where T : TransferFilterTileEntity
     {
-        public override bool NewRightClick(int i, int j)
+        public override bool RightClick(int i, int j)
         {
             if (!Main.LocalPlayer.HeldItem.IsAir)
             {
@@ -38,7 +38,7 @@ namespace MechTransfer.Tiles
         {
             T entity;
             if (TryGetEntity(i, j, out entity))
-                ((MechTransfer)mod).filterHoverUI.Display(entity.item, HoverText(entity), HoverColor(entity));
+                ((MechTransfer)Mod).filterHoverUI.Display(entity.item, HoverText(entity), HoverColor(entity));
         }
 
         public virtual string HoverText(T entity)

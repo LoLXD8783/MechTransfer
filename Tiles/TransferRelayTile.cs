@@ -11,14 +11,14 @@ namespace MechTransfer.Tiles
 {
     public class TransferRelayTile : SimpleTileObject, ITransferTarget
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             AddMapEntry(MapColors.Passthrough, GetPlaceItem(0).DisplayName);
 
             ModContent.GetInstance<TransferAgent>().targets.Add(Type, this);
             ModContent.GetInstance<TransferPipeTile>().connectedTiles.Add(Type);
 
-            base.SetDefaults();
+            base.SetStaticDefaults();
         }
 
         protected override void SetTileObjectData()
@@ -38,7 +38,7 @@ namespace MechTransfer.Tiles
 
             Tile tile = Main.tile[location.X, location.Y];
 
-            if (tile.frameX == 0)
+            if (tile.TileFrameX == 0)
             {
                 int decrement = agent.StartTransfer(location.X + 1, location.Y, item);
                 item.stack -= decrement;
@@ -48,7 +48,7 @@ namespace MechTransfer.Tiles
                     return true;
                 }
             }
-            else if (tile.frameX == 54)
+            else if (tile.TileFrameX == 54)
             {
                 int decrement = agent.StartTransfer(location.X - 1, location.Y, item);
                 item.stack -= decrement;
@@ -64,18 +64,17 @@ namespace MechTransfer.Tiles
 
         public override void PostLoad()
         {
-            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(mod, "TransferRelayItem", Type, 32, 16);
+            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(Mod, "TransferRelayItem", Type, 32, 16);
         }
 
         public override void AddRecipes()
         {
-            ModRecipe r = new ModRecipe(mod);
+            Recipe r = Recipe.Create(PlaceItems[0].Type, 1);
             r.AddIngredient(ModContent.ItemType<PneumaticActuatorItem>(), 1);
             r.AddIngredient(ItemID.RedPressurePlate, 1);
             r.anyPressurePlate = true;
             r.AddTile(TileID.WorkBenches);
-            r.SetResult(PlaceItems[0], 1);
-            r.AddRecipe();
+            r.Register();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace MechTransfer
 
         public MechTransfer()
         {
-            Properties = new ModProperties()
+            Properties/* tModPorter Note: Removed. Instead, assign the properties directly (ContentAutoloadingEnabled, GoreAutoloadingEnabled, MusicAutoloadingEnabled, and BackgroundAutoloadingEnabled) */ = new ModProperties()
             {
                 Autoload = true,
                 AutoloadGores = true,
@@ -233,7 +233,7 @@ namespace MechTransfer
             }
         }
 
-        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)/* tModPorter Note: Removed. Use ModSystem.ModifyInterfaceLayers */
         {
             int index = layers.FindIndex(x => x.Name == "Vanilla: Mouse Text") + 1;
             layers.Insert(index, interfaceLayer);
@@ -327,7 +327,7 @@ namespace MechTransfer
             Call(registerAdapterReflection, chestAdapter, chestTypes.ToArray());
         }
 
-        public override void AddRecipes()
+        public override void AddRecipes()/* tModPorter Note: Removed. Use ModSystem.AddRecipes */
         {
             foreach (var item in simpleTileAddRecipequeue)
             {
@@ -338,31 +338,29 @@ namespace MechTransfer
             if (modMagicStorage != null)
             {
                 //Magic storage interface
-                ModRecipe r = new ModRecipe(this);
-                r.AddIngredient(modMagicStorage.ItemType("StorageComponent"));
+                Recipe r = Recipe.Create(Find<ModItem>("MagicStorageInterfaceItem").Type);
+                r.AddIngredient(modMagicStorage.Find<ModItem>("StorageComponent").Type);
                 r.AddRecipeGroup("MagicStorage:AnyDiamond", 1);
                 r.AddIngredient(ModContent.ItemType<PneumaticActuatorItem>(), 1);
                 r.AddTile(TileID.WorkBenches);
-                r.SetResult(ItemType("MagicStorageInterfaceItem"));
-                r.AddRecipe();
+                r.Register();
             }
 
             if (modMagicStorageExtra != null)
             {
                 //Magic storage extra interface
-                ModRecipe r = new ModRecipe(this);
-                r.AddIngredient(modMagicStorageExtra.ItemType("StorageComponent"));
+                Recipe r = Recipe.Create(Find<ModItem>("MagicStorageExtraInterfaceItem").Type);
+                r.AddIngredient(modMagicStorageExtra.Find<ModItem>("StorageComponent").Type);
                 r.AddRecipeGroup("MagicStorageExtra:AnyDiamond", 1);
                 r.AddIngredient(ModContent.ItemType<PneumaticActuatorItem>(), 1);
                 r.AddTile(TileID.WorkBenches);
-                r.SetResult(ItemType("MagicStorageExtraInterfaceItem"));
-                r.AddRecipe();
+                r.Register();
             }
 
             LoadChestAdapters();
         }
 
-        public override void PostAddRecipes()
+        public override void PostAddRecipes()/* tModPorter Note: Removed. Use ModSystem.PostAddRecipes */
         {
             NetRouter.Init(0);
         }
@@ -389,12 +387,12 @@ namespace MechTransfer
 
         public static int PlaceItemType<T>(this Mod mod) where T : SimplePlaceableTile
         {
-            return GetPlaceItem<T>(mod).item.type;
+            return GetPlaceItem<T>(mod).Item.type;
         }
 
         public static int PlaceItemType<T>(this Mod mod, int style) where T : SimpleTileObject
         {
-            return GetPlaceItem<T>(mod, style).item.type;
+            return GetPlaceItem<T>(mod, style).Item.type;
         }
     }
 }

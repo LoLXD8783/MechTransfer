@@ -7,11 +7,11 @@ using Terraria.ModLoader;
 
 namespace MechTransfer
 {
-    internal class MechTransferAssemblerWorld : ModWorld
+    internal class MechTransferAssemblerWorld : ModSystem
     {
         private Texture2D pixel;
 
-        public override void Initialize()
+        public override void OnWorldLoad()/* tModPorter Suggestion: Also override OnWorldUnload, and mirror your worldgen-sensitive data initialization in PreWorldGen */
         {
             if (!Main.dedServ)
             {
@@ -42,17 +42,17 @@ namespace MechTransfer
             {
                 for (int y = screenTop; y < screenBottom; y++)
                 {
-                    if (Main.tile[x, y] != null && Main.tile[x, y].active())
+                    if (Main.tile[x, y] != null && Main.tile[x, y].HasTile)
                     {
-                        if (Main.tile[x, y].type == ModContent.TileType<TransferInjectorTile>() || Main.tile[x, y].type == ModContent.TileType<TransferExtractorTile>() || Main.tile[x, y].type == ModContent.TileType<StackExtractorTile>() || Main.tile[x, y].type == ModContent.TileType<TransferAssemblerTile>())
+                        if (Main.tile[x, y].TileType == ModContent.TileType<TransferInjectorTile>() || Main.tile[x, y].TileType == ModContent.TileType<TransferExtractorTile>() || Main.tile[x, y].TileType == ModContent.TileType<StackExtractorTile>() || Main.tile[x, y].TileType == ModContent.TileType<TransferAssemblerTile>())
                         {
-                            DrawTransition(x, y - 1, mod.GetTexture("Tiles/Transitions/Top"));
-                            DrawTransition(x, y + 1, mod.GetTexture("Tiles/Transitions/Bottom"));
-                            DrawTransition(x - 1, y, mod.GetTexture("Tiles/Transitions/Left"));
-                            DrawTransition(x + 1, y, mod.GetTexture("Tiles/Transitions/Right"));
+                            DrawTransition(x, y - 1, Mod.GetTexture("Tiles/Transitions/Top"));
+                            DrawTransition(x, y + 1, Mod.GetTexture("Tiles/Transitions/Bottom"));
+                            DrawTransition(x - 1, y, Mod.GetTexture("Tiles/Transitions/Left"));
+                            DrawTransition(x + 1, y, Mod.GetTexture("Tiles/Transitions/Right"));
                         }
 
-                        if (WiresUI.Settings.DrawWires && Main.tile[x, y].type == ModContent.TileType<TransferAssemblerTile>())
+                        if (WiresUI.Settings.DrawWires && Main.tile[x, y].TileType == ModContent.TileType<TransferAssemblerTile>())
                         {
                             DrawRectFast(x * 16 - 80 - (int)Main.screenPosition.X, y * 16 - 80 - (int)Main.screenPosition.Y, 176, 176);
                         }

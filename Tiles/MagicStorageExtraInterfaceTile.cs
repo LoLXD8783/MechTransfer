@@ -9,11 +9,11 @@ namespace MechTransfer.Tiles
 {
     public class MagicStorageExtraInterfaceTile : SimpleTileObject
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             AddMapEntry(MapColors.FillDark, GetPlaceItem(0).DisplayName);
 
-            base.SetDefaults();
+            base.SetStaticDefaults();
         }
 
         protected override void SetTileObjectData()
@@ -27,7 +27,7 @@ namespace MechTransfer.Tiles
 
         public override void PostLoad()
         {
-            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(mod, "MagicStorageExtraInterfaceItem", Type, 32, 32);
+            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(Mod, "MagicStorageExtraInterfaceItem", Type, 32, 32);
         }
     }
 }

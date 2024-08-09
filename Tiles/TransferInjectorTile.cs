@@ -11,14 +11,14 @@ namespace MechTransfer.Tiles
 {
     public class TransferInjectorTile : SimpleTileObject, ITransferTarget
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             AddMapEntry(MapColors.Output, GetPlaceItem(0).DisplayName);
 
             ModContent.GetInstance<TransferAgent>().targets.Add(Type, this);
             ModContent.GetInstance<TransferPipeTile>().connectedTiles.Add(Type);
 
-            base.SetDefaults();
+            base.SetStaticDefaults();
         }
 
         protected override void SetTileObjectData()
@@ -48,18 +48,17 @@ namespace MechTransfer.Tiles
 
         public override void PostLoad()
         {
-            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(mod, "TransferInjectorItem", Type);
+            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(Mod, "TransferInjectorItem", Type);
         }
 
         public override void AddRecipes()
         {
-            ModRecipe r = new ModRecipe(mod);
+            Recipe r = Recipe.Create(PlaceItems[0].Type, 1);
             r.AddIngredient(ModContent.ItemType<PneumaticActuatorItem>(), 1);
             r.AddIngredient(ItemID.GoldenKey, 1);
             r.AddIngredient(ItemID.Wire, 2);
-            r.SetResult(PlaceItems[0], 1);
             r.AddTile(TileID.WorkBenches);
-            r.AddRecipe();
+            r.Register();
         }
     }
 }

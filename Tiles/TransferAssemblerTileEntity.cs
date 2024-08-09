@@ -48,19 +48,19 @@ namespace MechTransfer.Tiles
             }
         }
 
-        public override TagCompound Save()
+        public override void SaveData(TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */
         {
-            TagCompound tags = base.Save();
+            TagCompound tags = base.SaveData();
             if (stock.stack > 0)
                 tags.Add("stck", ItemIO.Save(stock));
             return tags;
         }
 
-        public override void Load(TagCompound tag)
+        public override void LoadData(TagCompound tag)
         {
             if (tag.ContainsKey("stck"))
                 stock = ItemIO.Load((TagCompound)tag["stck"]);
-            base.Load(tag);
+            base.LoadData(tag);
         }
 
         public override void NetSend(BinaryWriter writer, bool lightSend)

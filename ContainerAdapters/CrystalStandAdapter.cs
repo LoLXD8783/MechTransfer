@@ -26,7 +26,7 @@ namespace MechTransfer.ContainerAdapters
                 return false;
 
             Tile tile = Main.tile[x, y];
-            if (tile == null || !tile.active())
+            if (tile == null || !tile.HasTile)
                 return false;
 
             if (DD2Event.WouldFailSpawningHere(x, y))

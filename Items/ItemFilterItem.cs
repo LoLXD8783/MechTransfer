@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,7 +15,7 @@ namespace MechTransfer.Items
 
         private MatchConditionn matchConditionn;
 
-        public override bool CloneNewInstances { get { return true; } }
+        protected override bool CloneNewInstances { get { return true; } }
 
         public ItemFilterItem(MatchConditionn matchConditionn)
         {
@@ -23,12 +24,12 @@ namespace MechTransfer.Items
 
         public override void SetDefaults()
         {
-            item.width = 26;
-            item.height = 26;
-            item.maxStack = 1;
-            item.value = Item.buyPrice(0, 5, 0, 0);
-            item.rare = Rarity;
-            item.expert = expert;
+            Item.width = 26;
+            Item.height = 26;
+            Item.maxStack = 1;
+            Item.value = Item.buyPrice(0, 5, 0, 0);
+            Item.rare = Rarity;
+            Item.expert = expert;
         }
 
         public bool MatchesItem(Item item)
@@ -36,7 +37,7 @@ namespace MechTransfer.Items
             return matchConditionn(item);
         }
 
-        public override bool Autoload(ref string name)
+        public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */
         {
             return false;
         }
@@ -45,19 +46,18 @@ namespace MechTransfer.Items
         {
             if (recipeItem != -1)
             {
-                ModRecipe r = new ModRecipe(mod);
-                r.AddIngredient(mod.ItemType("AnyFilterItem"), 1);
+                Recipe r = Recipe.Create(Item.type, 1);
+                r.AddIngredient(Mod.Find<ModItem>("AnyFilterItem").Type, 1);
                 r.AddIngredient(recipeItem, 1);
-                r.SetResult(item.type, 1);
                 r.AddTile(TileID.WorkBenches);
-                r.AddRecipe();
+                r.Register();
             }
         }
 
         //Needed to stop ModLoader from assigning a default display name
         public override void AutoStaticDefaults()
         {
-            Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+            TextureAssets.Item[Item.type].Value = ModContent.GetTexture(Texture);
         }
     }
 }

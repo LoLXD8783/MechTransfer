@@ -26,11 +26,11 @@ namespace MechTransfer.Tiles
             { 355,  new int[]{ 13, 14 } },
         };
 
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             AddMapEntry(MapColors.Input, GetPlaceItem(0).DisplayName);
 
-            base.SetDefaults();
+            base.SetStaticDefaults();
         }
 
         protected override void SetTileObjectData()
@@ -127,33 +127,33 @@ namespace MechTransfer.Tiles
                 for (int j = y - 5; j <= y + 5; j++)
                 {
                     Tile tile = Main.tile[i, j];
-                    if (tile != null && tile.active())
+                    if (tile != null && tile.HasTile)
                     {
                         for (int z = 0; z < Recipe.maxRequirements && recipe.requiredTile[z] != -1; z++)
                         {
-                            ModTile modTile = TileLoader.GetTile(tile.type);
+                            ModTile modTile = TileLoader.GetTile(tile.TileType);
 
-                            if ((recipe.requiredTile[z] == tile.type) ||
-                                (tileRemap.ContainsKey(tile.type) && tileRemap[tile.type].Contains(recipe.requiredTile[z])) ||
-                                (modTile != null && modTile.adjTiles.Contains(recipe.requiredTile[z])))
+                            if ((recipe.requiredTile[z] == tile.TileType) ||
+                                (tileRemap.ContainsKey(tile.TileType) && tileRemap[tile.TileType].Contains(recipe.requiredTile[z])) ||
+                                (modTile != null && modTile.AdjTiles.Contains(recipe.requiredTile[z])))
                             {
                                 tileOk[z] = true;
                             }
 
                             //easier than reimplementing the zone finding logic
-                            if (tile.type == TileID.SnowBlock || tile.type == TileID.IceBlock || tile.type == TileID.HallowedIce || tile.type == TileID.FleshIce || tile.type == TileID.CorruptIce)
+                            if (tile.TileType == TileID.SnowBlock || tile.TileType == TileID.IceBlock || tile.TileType == TileID.HallowedIce || tile.TileType == TileID.FleshIce || tile.TileType == TileID.CorruptIce)
                                 snowOk = true;
 
-                            if (tile.type == TileID.AlchemyTable && recipe.alchemy)
+                            if (tile.TileType == TileID.AlchemyTable && recipe.alchemy)
                                 alchemy = true;
 
                             //can't access TileLoader.HookAdjTiles, so if a mod uses that, it won't work
                         }
                     }
 
-                    if (tile != null && tile.liquid > 200)
+                    if (tile != null && tile.LiquidAmount > 200)
                     {
-                        switch (tile.liquidType())
+                        switch (tile.LiquidType)
                         {
                             case 0: waterOk = true; break;
                             case 2: honeyOk = true; break;
@@ -236,18 +236,17 @@ namespace MechTransfer.Tiles
 
         public override void PostLoad()
         {
-            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(mod, "TransferAssemblerItem", Type, 16, 16, 0, Item.sellPrice(0, 1, 0, 0));
-            PlaceItems[0].item.rare = ItemRarityID.LightRed;
+            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(Mod, "TransferAssemblerItem", Type, 16, 16, 0, Item.sellPrice(0, 1, 0, 0));
+            PlaceItems[0].Item.rare = ItemRarityID.LightRed;
         }
 
         public override void AddRecipes()
         {
-            ModRecipe r = new ModRecipe(mod);
+            Recipe r = Recipe.Create(PlaceItems[0].Type, 1);
             r.AddIngredient(ModContent.ItemType<PneumaticActuatorItem>(), 1);
             r.AddIngredient(ItemID.Cog, 10);
             r.AddTile(TileID.WorkBenches);
-            r.SetResult(PlaceItems[0], 1);
-            r.AddRecipe();
+            r.Register();
         }
     }
 }

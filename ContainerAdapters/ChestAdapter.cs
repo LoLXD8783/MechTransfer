@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,18 +21,18 @@ namespace MechTransfer.ContainerAdapters
         private int FindChest(int x, int y)
         {
             Tile tile = Main.tile[x, y];
-            if (tile == null || !tile.active())
+            if (tile == null || !tile.HasTile)
                 return -1;
 
             int originX = x;
             int originY = y;
 
-            if (TileLoader.IsDresser(tile.type))
-                originX -= tile.frameX % 54 / 18;
+            if (TileLoader.IsDresser(tile.TileType))
+                originX -= tile.TileFrameX % 54 / 18;
             else
-                originX -= tile.frameX % 36 / 18;
+                originX -= tile.TileFrameX % 36 / 18;
 
-            originY -= tile.frameY % 36 / 18;
+            originY -= tile.TileFrameY % 36 / 18;
 
             if (!Chest.isLocked(originX, originY))
                 return Chest.FindChest(originX, originY);
@@ -147,7 +148,7 @@ namespace MechTransfer.ContainerAdapters
         {
             Main.LocalPlayer.chest = -1;
             Recipe.FindRecipes();
-            Main.PlaySound(SoundID.MenuClose);
+            SoundEngine.PlaySound(SoundID.MenuClose);
         }
     }
 }

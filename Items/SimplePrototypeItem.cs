@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,11 +22,11 @@ namespace MechTransfer.Items
         public override ModItem NewInstance(Item itemClone)
         {
             ModItem newModItem = base.NewInstance(itemClone);
-            CopyItemFields(itemClone, item);
+            CopyItemFields(itemClone, Item);
             return newModItem;
         }
 
-        public override bool Autoload(ref string name)
+        public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */
         {
             return false;
         }
@@ -33,27 +34,27 @@ namespace MechTransfer.Items
         //Needed to stop ModLoader from assigning a default display name
         public override void AutoStaticDefaults()
         {
-            Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+            TextureAssets.Item[Item.type].Value = ModContent.GetTexture(Texture);
         }
 
         public static SimplePrototypeItem MakePlaceable(Mod mod, string name, int placeType, int width = 16, int height = 16, int placeStyle = 0, int value = 50000)
         {
             SimplePrototypeItem i = new SimplePrototypeItem(mod, name);
 
-            i.item.width = width;
-            i.item.height = height;
-            i.item.value = value;
-            i.item.maxStack = 999;
-            i.item.useTurn = true;
-            i.item.autoReuse = true;
-            i.item.useAnimation = 15;
-            i.item.useTime = 10;
-            i.item.useStyle = 1;
-            i.item.consumable = true;
-            i.item.mech = true;
-            i.item.createTile = placeType;
-            i.item.placeStyle = placeStyle;
-            i.item.rare = ItemRarityID.Blue;
+            i.Item.width = width;
+            i.Item.height = height;
+            i.Item.value = value;
+            i.Item.maxStack = 999;
+            i.Item.useTurn = true;
+            i.Item.autoReuse = true;
+            i.Item.useAnimation = 15;
+            i.Item.useTime = 10;
+            i.Item.useStyle = 1;
+            i.Item.consumable = true;
+            i.Item.mech = true;
+            i.Item.createTile = placeType;
+            i.Item.placeStyle = placeStyle;
+            i.Item.rare = ItemRarityID.Blue;
 
             return i;
         }
@@ -73,7 +74,7 @@ namespace MechTransfer.Items
             i.expert = j.expert;
             i.expertOnly = j.expertOnly;
             i.instanced = j.instanced;
-            i.thrown = j.thrown;
+            i.thrown/* tModPorter Suggestion: DamageType = ... */ = j.CountsAsClass(DamageClass.Throwing);
             i.questItem = j.questItem;
             i.fishingPole = j.fishingPole;
             i.bait = j.bait;
@@ -88,10 +89,10 @@ namespace MechTransfer.Items
             i.mech = j.mech;
             i.flame = j.flame;
             i.reuseDelay = j.reuseDelay;
-            i.melee = j.melee;
-            i.magic = j.magic;
-            i.ranged = j.ranged;
-            i.summon = j.summon;
+            i.melee/* tModPorter Suggestion: DamageType = ... */ = j.CountsAsClass(DamageClass.Melee);
+            i.magic/* tModPorter Suggestion: DamageType = ... */ = j.CountsAsClass(DamageClass.Magic);
+            i.ranged/* tModPorter Suggestion: DamageType = ... */ = j.CountsAsClass(DamageClass.Ranged);
+            i.summon/* tModPorter Suggestion: DamageType = ... */ = j.CountsAsClass(DamageClass.Summon);
             i.placeStyle = j.placeStyle;
             i.buffTime = j.buffTime;
             i.buffType = j.buffType;

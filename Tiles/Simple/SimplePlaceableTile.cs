@@ -6,9 +6,9 @@ namespace MechTransfer.Tiles.Simple
     {
         public ModItem PlaceItem { get; protected set; }
 
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
-            drop = PlaceItem.item.type;
+            ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = PlaceItem.Item.type;
         }
     }
 }

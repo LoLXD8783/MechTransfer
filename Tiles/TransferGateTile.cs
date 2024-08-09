@@ -11,14 +11,14 @@ namespace MechTransfer.Tiles
 {
     public class TransferGateTile : SimpleTileObject, ITransferPassthrough
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             AddMapEntry(MapColors.Passthrough, GetPlaceItem(0).DisplayName);
 
             ModContent.GetInstance<TransferAgent>().passthroughs.Add(Type, this);
             ModContent.GetInstance<TransferPipeTile>().connectedTiles.Add(Type);
 
-            base.SetDefaults();
+            base.SetStaticDefaults();
         }
 
         protected override void SetTileObjectData()
@@ -30,13 +30,13 @@ namespace MechTransfer.Tiles
 
         public override void HitWire(int i, int j)
         {
-            if (Main.tile[i, j].frameY == 0)
+            if (Main.tile[i, j].TileFrameY == 0)
             {
-                Main.tile[i, j].frameY = 18;
+                Main.tile[i, j].TileFrameY = 18;
             }
             else
             {
-                Main.tile[i, j].frameY = 0;
+                Main.tile[i, j].TileFrameY = 0;
             }
 
             if (Main.netMode == 2)
@@ -45,22 +45,21 @@ namespace MechTransfer.Tiles
 
         public bool ShouldPassthrough(Point16 location, Item item)
         {
-            return Main.tile[location.X, location.Y].frameY == 0;
+            return Main.tile[location.X, location.Y].TileFrameY == 0;
         }
 
         public override void PostLoad()
         {
-            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(mod, "TransferGateItem", Type);
+            PlaceItems[0] = SimplePrototypeItem.MakePlaceable(Mod, "TransferGateItem", Type);
         }
 
         public override void AddRecipes()
         {
-            ModRecipe r = new ModRecipe(mod);
+            Recipe r = Recipe.Create(PlaceItems[0].Type, 1);
             r.AddIngredient(ModContent.ItemType<PneumaticActuatorItem>(), 1);
             r.AddIngredient(ItemID.Actuator, 1);
             r.AddTile(TileID.WorkBenches);
-            r.SetResult(PlaceItems[0], 1);
-            r.AddRecipe();
+            r.Register();
         }
     }
 }

@@ -13,8 +13,8 @@ namespace MechTransfer.ContainerAdapters
         {
             Tile tile = Main.tile[x, y];
 
-            int originX = x - tile.frameX / 18;
-            int originY = y - tile.frameY / 18;
+            int originX = x - tile.TileFrameX / 18;
+            int originY = y - tile.TileFrameY / 18;
 
             Point16 center = TEStorageComponent.FindStorageCenter(new Point16(originX, originY));
             if (center.X == -1 && center.Y == -1)

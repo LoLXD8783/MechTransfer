@@ -21,10 +21,10 @@ namespace MechTransfer.Tiles.Simple
             return Place(i, j);
         }
 
-        public override bool ValidTile(int i, int j)
+        public override bool IsTileValidForEntity(int i, int j)
         {
             Tile tile = Main.tile[i, j];
-            return tile != null && tile.active() && validTiles[Type].Contains(tile.type);
+            return tile != null && tile.HasTile && validTiles[Type].Contains(tile.TileType);
         }
 
         public virtual void PostLoadPrototype()

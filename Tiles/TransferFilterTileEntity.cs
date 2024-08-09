@@ -22,12 +22,12 @@ namespace MechTransfer.Tiles
             }
         }
 
-        public override TagCompound Save()
+        public override void SaveData(TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */
         {
             return new TagCompound() { { "Item", ItemIO.Save(item) } };
         }
 
-        public override void Load(TagCompound tag)
+        public override void LoadData(TagCompound tag)
         {
             if (tag.ContainsKey("Item"))
             {
